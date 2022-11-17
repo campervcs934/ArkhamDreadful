@@ -43,10 +43,11 @@ namespace Networking
             _lobbyEntered = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
             _lobbyList = Callback<LobbyMatchList_t>.Create(OnLobbyListRequested);
             _lobbyContentManager = lobbyContent.GetComponent<LobbyContentManager>();
-            RequestLobbyList();
+           // RequestLobbyList();
             _lobbyContentManager.FillBossNames(selectedBossDropDown);
 
         }
+
 
         public void HostLobby()
         {
@@ -62,8 +63,8 @@ namespace Networking
 
         public void RequestLobbyList()
         {
-           
-           // SteamMatchmaking.AddRequestLobbyListDistanceFilter(ELobbyDistanceFilter.k_ELobbyDistanceFilterClose);
+            _lobbyContentManager.ClearAllLobby();
+            // SteamMatchmaking.AddRequestLobbyListDistanceFilter(ELobbyDistanceFilter.k_ELobbyDistanceFilterClose);
             SteamMatchmaking.RequestLobbyList();
         }
 
@@ -135,7 +136,7 @@ namespace Networking
 
         public void SearchLobby(TMP_InputField nameLobby)
         {
-  
+          _lobbyContentManager.ClearAllLobby();
           SteamMatchmaking.AddRequestLobbyListStringFilter(NameKey, nameLobby.text, ELobbyComparison.k_ELobbyComparisonEqual);
           SteamMatchmaking.RequestLobbyList();
           Debug.Log(nameLobby.text);

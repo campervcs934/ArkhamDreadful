@@ -242,6 +242,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 351642386199337770, guid: 0a68be1bd13d8694e8d8fe85574ac075, type: 3}
   m_PrefabInstance: {fileID: 1192090431}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &270427408 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 393194567867878790, guid: 0a68be1bd13d8694e8d8fe85574ac075, type: 3}
+  m_PrefabInstance: {fileID: 1192090431}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81bc16ca95894c34b836ea33671ae46d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &295479438 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5464380570791680336, guid: 0a68be1bd13d8694e8d8fe85574ac075, type: 3}
@@ -2408,27 +2419,47 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 394424715767597354, guid: 0a68be1bd13d8694e8d8fe85574ac075, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 394424715767597354, guid: 0a68be1bd13d8694e8d8fe85574ac075, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 394424715767597354, guid: 0a68be1bd13d8694e8d8fe85574ac075, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1798161388}
+    - target: {fileID: 394424715767597354, guid: 0a68be1bd13d8694e8d8fe85574ac075, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 270427408}
     - target: {fileID: 394424715767597354, guid: 0a68be1bd13d8694e8d8fe85574ac075, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 394424715767597354, guid: 0a68be1bd13d8694e8d8fe85574ac075, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RequestLobbyList
+      objectReference: {fileID: 0}
+    - target: {fileID: 394424715767597354, guid: 0a68be1bd13d8694e8d8fe85574ac075, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: HostLobby
+      value: PlayCampaign
+      objectReference: {fileID: 0}
+    - target: {fileID: 394424715767597354, guid: 0a68be1bd13d8694e8d8fe85574ac075, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Networking.SteamLobby, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 394424715767597354, guid: 0a68be1bd13d8694e8d8fe85574ac075, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: Networking.SteamLobby, Assembly-CSharp
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 394424715767597354, guid: 0a68be1bd13d8694e8d8fe85574ac075, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 394424715767597354, guid: 0a68be1bd13d8694e8d8fe85574ac075, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: IntroCinematic
       objectReference: {fileID: 0}
     - target: {fileID: 394424715767597354, guid: 0a68be1bd13d8694e8d8fe85574ac075, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -4019,7 +4050,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hostButton: {fileID: 442814124}
   lobbyNameText: {fileID: 295479438}
-  lobbyIDText: {fileID: 0}
   lobbyNameInput: {fileID: 2087763396}
   lobbyId: {fileID: 497964998}
   joinButton: {fileID: 899223827}

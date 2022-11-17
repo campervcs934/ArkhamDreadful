@@ -10,6 +10,7 @@ using System;
 public class LobbyContentManager : MonoBehaviour
 {
     [SerializeField] private GameObject button;
+    private List<GameObject> lobbies = new ();
 
 
     public void FillLobbyContent(string lobbyName, string selectedBoss, string lobbyId)
@@ -37,6 +38,7 @@ public class LobbyContentManager : MonoBehaviour
             case BossNames.Dagon:
                 buttonClone.GetComponentsInChildren<Image>()[1].sprite = LoadImage("Assets/SlimUI/Modern Menu 1/Graphics/Images/Essence.jpg"); break;
         }
+        lobbies.Add(buttonClone);
         
     }
 
@@ -61,6 +63,13 @@ public class LobbyContentManager : MonoBehaviour
                 text = BossNames.Dagon.ToString()
             }
         }) ; 
+    }
+
+    public void ClearAllLobby()
+
+    {
+        lobbies.ForEach(x => Destroy(x));
+        lobbies.Clear();
     }
 
     
