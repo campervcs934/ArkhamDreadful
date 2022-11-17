@@ -7,6 +7,12 @@
       "dependencies": {},
       "hash": "8e5c46a9e6cc9b5d2a1d281eee41e28d117866f7"
     },
+    "com.unity.2d.sprite": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
     "com.unity.collab-proxy": {
       "version": "1.17.6",
       "depth": 0,
@@ -84,7 +90,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.services.core": {
-      "version": "1.5.2",
+      "version": "1.4.2",
       "depth": 1,
       "source": "registry",
       "dependencies": {

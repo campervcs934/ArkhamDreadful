@@ -2,6 +2,8 @@ using Mirror;
 using Steamworks;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using Scripts.Enums;
 
 namespace Networking
 {
@@ -16,15 +18,20 @@ namespace Networking
         //Variables
         private const string HostAddressKey = "HostAddress";
         private const string NameKey = "name";
+        private const string BossKey = "boss";
         private CustomNetworkManager _manager;
 
         //GameObject
         public GameObject hostButton;
-        public Text lobbyNameText;
-        public InputField lobbyNameInput;
-        public Text lobbyId;
+        public TMP_Text lobbyNameText;
+        public TMP_InputField lobbyNameInput;
+        public TMP_Text lobbyId;
         public GameObject joinButton;
-        public Dropdown lobbyListDropdown;
+        public TMP_Dropdown selectedBossDropDown;
+        public GameObject lobbyContent;
+
+        //Services
+        private LobbyContentManager _lobbyContentManager;
 
         void Start()
         {
@@ -35,7 +42,10 @@ namespace Networking
             _joinRequest = Callback<GameLobbyJoinRequested_t>.Create(OnJoinRequest);
             _lobbyEntered = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
             _lobbyList = Callback<LobbyMatchList_t>.Create(OnLobbyListRequested);
-            RequestLobbyList();
+            _lobbyContentManager = lobbyContent.GetComponent<LobbyContentManager>();
+           // RequestLobbyList();
+            _lobbyContentManager.FillBossNames(selectedBossDropDown);
+
         }
 
         public void HostLobby()
@@ -50,7 +60,7 @@ namespace Networking
 
         public void RequestLobbyList()
         {
-            SteamMatchmaking.AddRequestLobbyListDistanceFilter(ELobbyDistanceFilter.k_ELobbyDistanceFilterClose);
+           // SteamMatchmaking.AddRequestLobbyListDistanceFilter(ELobbyDistanceFilter.k_ELobbyDistanceFilterClose);
             SteamMatchmaking.RequestLobbyList();
         }
 
@@ -60,12 +70,10 @@ namespace Networking
             {
                 var lobbyID = SteamMatchmaking.GetLobbyByIndex(i);
                 var membersCount = SteamMatchmaking.GetNumLobbyMembers(lobbyID);
-                //var image = SteamFriends.GetLargeFriendAvatar(ownerID);
-
-                lobbyListDropdown.options.Add(new Dropdown.OptionData
-                {
-                    text = "id: " + lobbyID + " members: " + membersCount,
-                });
+                var boss = SteamMatchmaking.GetLobbyData(lobbyID, BossKey);
+                boss = string.IsNullOrEmpty(boss) ? BossNames.Dagon.ToString() : boss;
+                var lobbyName = SteamMatchmaking.GetLobbyData(lobbyID, NameKey);
+                _lobbyContentManager.FillLobbyContent(lobbyName, boss);
             }
         }
 
@@ -78,6 +86,7 @@ namespace Networking
             var id = new CSteamID(callback.m_ulSteamIDLobby);
             SteamMatchmaking.SetLobbyData(id, HostAddressKey, SteamUser.GetSteamID().ToString());
             SteamMatchmaking.SetLobbyData(id, NameKey, lobbyNameInput.text);
+            SteamMatchmaking.SetLobbyData(id, BossKey, selectedBossDropDown.options[selectedBossDropDown.value].text);
         }
 
         private void OnJoinRequest(GameLobbyJoinRequested_t callback)
@@ -89,12 +98,13 @@ namespace Networking
         private void OnLobbyEntered(LobbyEnter_t callback)
         {
             var id = new CSteamID(callback.m_ulSteamIDLobby);
-
+            
             //Everyone
             hostButton.SetActive(false);
             lobbyNameText.gameObject.SetActive(true);
             lobbyNameText.text = SteamMatchmaking.GetLobbyData(id, NameKey);
             lobbyId.gameObject.SetActive(true);
+            lobbyNameInput.gameObject.SetActive(false);
             lobbyId.text = id.ToString();
 
             //Clients
@@ -103,20 +113,29 @@ namespace Networking
             _manager.StartClient();
         }
 
-        private static Sprite GetSteamImageAsSprite(int iImage)
+        //private static Sprite GetSteamImageAsSprite(int iImage)
+        //{
+        //    var bIsValid = SteamUtils.GetImageSize(iImage, pnWidth: out var imageWidth, pnHeight: out var imageHeight);
+
+        //    if (!bIsValid) return null;
+        //    var image = new byte[imageWidth * imageHeight * 4];
+
+        //    bIsValid = SteamUtils.GetImageRGBA(iImage, image, (int)(imageWidth * imageHeight * 4));
+        //    if (!bIsValid) return null;
+        //    var ret = new Texture2D((int)imageWidth, (int)imageHeight, TextureFormat.RGBA32, false, true);
+        //    ret.LoadRawTextureData(image);
+        //    ret.Apply();
+
+        //    return Sprite.Create(ret, new Rect(0, 0, imageWidth, imageHeight), Vector2.zero);
+        //}
+
+        public void SearchLobby(TMP_InputField nameLobby)
         {
-            var bIsValid = SteamUtils.GetImageSize(iImage, pnWidth: out var imageWidth, pnHeight: out var imageHeight);
+          
+          SteamMatchmaking.AddRequestLobbyListStringFilter(NameKey, nameLobby.text, ELobbyComparison.k_ELobbyComparisonEqualToOrLessThan);
+          SteamMatchmaking.RequestLobbyList();
+            Debug.Log(nameLobby.text);
 
-            if (!bIsValid) return null;
-            var image = new byte[imageWidth * imageHeight * 4];
-
-            bIsValid = SteamUtils.GetImageRGBA(iImage, image, (int)(imageWidth * imageHeight * 4));
-            if (!bIsValid) return null;
-            var ret = new Texture2D((int)imageWidth, (int)imageHeight, TextureFormat.RGBA32, false, true);
-            ret.LoadRawTextureData(image);
-            ret.Apply();
-
-            return Sprite.Create(ret, new Rect(0, 0, imageWidth, imageHeight), Vector2.zero);
         }
     }
 }
