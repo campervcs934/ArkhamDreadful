@@ -12,11 +12,13 @@ public class LobbyContentManager : MonoBehaviour
     [SerializeField] private GameObject button;
 
 
-    public void FillLobbyContent(string lobbyName, string selectedBoss)
+    public void FillLobbyContent(string lobbyName, string selectedBoss, string lobbyId)
     {
         var buttonClone = Instantiate(button);
         buttonClone.SetActive(true);
-        buttonClone.GetComponentInChildren<TMP_Text>().text = lobbyName;
+        buttonClone.GetComponentsInChildren<TMP_Text>()[0].text = lobbyName;
+        buttonClone.GetComponentsInChildren<TMP_Text>()[1].text = lobbyId;
+
         buttonClone.transform.parent = transform;
         buttonClone.GetComponent<RectTransform>().transform.position
             = button.GetComponent<RectTransform>().transform.position;

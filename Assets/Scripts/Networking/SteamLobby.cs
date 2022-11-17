@@ -43,23 +43,26 @@ namespace Networking
             _lobbyEntered = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
             _lobbyList = Callback<LobbyMatchList_t>.Create(OnLobbyListRequested);
             _lobbyContentManager = lobbyContent.GetComponent<LobbyContentManager>();
-           // RequestLobbyList();
+            RequestLobbyList();
             _lobbyContentManager.FillBossNames(selectedBossDropDown);
 
         }
 
         public void HostLobby()
         {
-            SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, _manager.maxConnections);
+            SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypePublic, _manager.maxConnections);
         }
 
-        public void JoinLobby(Dropdown ids)
+        public void JoinLobby(TMP_Text ids)
         {
-            SteamMatchmaking.JoinLobby(new CSteamID(ulong.Parse(ids.captionText.text)));
+            SteamMatchmaking.JoinLobby(new CSteamID(ulong.Parse(ids.text)));
+
+
         }
 
         public void RequestLobbyList()
         {
+           
            // SteamMatchmaking.AddRequestLobbyListDistanceFilter(ELobbyDistanceFilter.k_ELobbyDistanceFilterClose);
             SteamMatchmaking.RequestLobbyList();
         }
@@ -73,7 +76,8 @@ namespace Networking
                 var boss = SteamMatchmaking.GetLobbyData(lobbyID, BossKey);
                 boss = string.IsNullOrEmpty(boss) ? BossNames.Dagon.ToString() : boss;
                 var lobbyName = SteamMatchmaking.GetLobbyData(lobbyID, NameKey);
-                _lobbyContentManager.FillLobbyContent(lobbyName, boss);
+               
+                _lobbyContentManager.FillLobbyContent(lobbyName, boss, lobbyID.ToString());
             }
         }
 
@@ -131,10 +135,10 @@ namespace Networking
 
         public void SearchLobby(TMP_InputField nameLobby)
         {
-          
-          SteamMatchmaking.AddRequestLobbyListStringFilter(NameKey, nameLobby.text, ELobbyComparison.k_ELobbyComparisonEqualToOrLessThan);
+  
+          SteamMatchmaking.AddRequestLobbyListStringFilter(NameKey, nameLobby.text, ELobbyComparison.k_ELobbyComparisonEqual);
           SteamMatchmaking.RequestLobbyList();
-            Debug.Log(nameLobby.text);
+          Debug.Log(nameLobby.text);
 
         }
     }
